@@ -6,6 +6,7 @@ import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://nongpepenasi.github.io/MEAMOD-Page/",
+  site: "https://nongpepenasi.github.io",
   integrations: [tailwind(), mdx(), sitemap(), icon()],
+  base: "/MEAMOD-Page/",
 });
