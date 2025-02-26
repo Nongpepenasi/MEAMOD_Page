@@ -8,5 +8,5 @@ import icon from "astro-icon";
 export default defineConfig({
   site: "https://nongpepenasi.github.io",
   integrations: [tailwind(), mdx(), sitemap(), icon()],
-  base: 'MEAMOD-Page',
+  base: process.env.NODE_ENV === "production" ? "/MEAMOD-Page/" : "/",
 });
