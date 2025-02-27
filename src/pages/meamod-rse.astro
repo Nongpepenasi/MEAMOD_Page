@@ -1,0 +1,18 @@
+---
+import Container from "@components/container.astro";
+import Layout from "@layouts/Layout.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import ResponsibilitiesList from "@components/rse-responsibilities.astro";
+import TeamImage from "@components/rse-team.astro";
+---
+
+<Layout title="MAEMOD Research Software Engineering">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">MAEMOD Research Software Engineering</Fragment>
+      <Fragment slot="desc">Building robust mathematical models and software for infectious disease research.</Fragment>
+    </Sectionhead>
+    <ResponsibilitiesList />
+    <TeamImage />
+  </Container>
+</Layout>

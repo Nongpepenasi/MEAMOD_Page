@@ -1,0 +1,42 @@
+---
+const responsibilities = [
+  {
+    title: "Develop and Maintain Robust Mathematical Models",
+    description: "Creating and maintaining mathematical models to simulate the spread of infectious diseases.",
+  },
+  {
+    title: "Foster Cross-Disciplinary Collaboration",
+    description: "Encourage collaboration between RSEs, mathematical modeling teams, and epidemiologists.",
+  },
+  {
+    title: "Continuously Improve Tools & Techniques",
+    description: "Keeping up with advancements in software engineering, mathematical modeling, and tropical medicine.",
+  },
+  {
+    title: "Promote Open Science & Reproducibility",
+    description: "Ensure all code and models are well-documented and reproducible.",
+  },
+  {
+    title: "Support Grant Applications & Fundraising",
+    description: "Assist in writing technical sections of grant applications.",
+  },
+  {
+    title: "User Training & Support",
+    description: "Provide training and ongoing support for software users in the research unit.",
+  },
+];
+---
+
+<section class="pt-16 pb-8">
+  <h2 class="text-3xl font-bold text-gray-800 text-center">Our Responsibilities</h2>
+  <div class="mt-8 space-y-6 max-w-3xl mx-auto">
+    {responsibilities.map((item) => (
+      <div class="flex items-start gap-4">
+        <div class="w-3 h-3 bg-blue-600 rounded-full mt-2"></div>
+        <p class="text-lg text-gray-700">
+          <b>{item.title}:</b> {item.description}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
