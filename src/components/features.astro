@@ -18,28 +18,23 @@ const features = [
 ];
 ---
 
-<div class="mt-16 md:mt-0">
-  <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
-    MAEMOD Mission
-  </h2>
-  <p class="text-lg mt-4 text-slate-600">
-    Astro comes batteries included. It takes the best parts of state-of-the-art
-    tools and adds its own innovations.
+<section class="py-16">
+  <h2 class="text-4xl font-bold text-center text-gray-800">MAEMOD Mission</h2>
+  <p class="text-lg text-gray-600 text-center mt-2">
+    Our research focuses on mathematical and economic modeling in tropical medicine.
   </p>
-</div>
 
-<div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
-  {
-    features.map((item) => (
-      <div class="flex gap-4 items-start">
-        <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0">
-          <Icon class="text-white" name={item.icon} />
+  <div class="flex flex-wrap justify-center gap-8 mt-12">
+    {features.map((item) => (
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:-translate-y-2 max-w-md w-full sm:w-[45%]">
+        <div class="flex items-center gap-4">
+          <div class="bg-black text-white p-3 rounded-full">
+            <Icon class="w-6 h-6" name={item.icon} />
+          </div>
+          <h3 class="font-semibold text-lg">{item.title}</h3>
         </div>
-        <div>
-          <h3 class="font-semibold text-lg">{item.title}</h3>{" "}
-          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
-        </div>
+        <p class="text-gray-600 mt-3">{item.description}</p>
       </div>
-    ))
-  }
-</div>
+    ))}
+  </div>
+</section>
