@@ -1,0 +1,20 @@
+---
+import Container from "@components/container.astro";
+import ProjectList from "@components/project_list.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="">
+  <Container>
+    <!-- <Hero />
+    <Features /> -->
+    <!-- <Logos />
+    <Cta /> -->
+    <Sectionhead>
+      <Fragment slot="title">Projects/Codes</Fragment>
+      <Fragment slot="desc">This is where we share our software, codes, data and information of our projects</Fragment>
+    </Sectionhead>
+    <ProjectList />
+  </Container>
+</Layout>
