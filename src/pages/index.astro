@@ -1,14 +1,14 @@
 ---
 import Container from "@components/container.astro";
-import Cta from "@components/cta.astro";
 import Features from "@components/features.astro";
 import Hero from "@components/hero.astro";
-import Logos from "@components/logos.astro";
 import ProjectList from "@components/project_list.astro";
+import { projects } from "data/projects";
+import Link from "@components/ui/link.astro";
 import Layout from "@layouts/Layout.astro";
 ---
 
-<Layout title="">
+<Layout title="MAEMOD">
   <Container>
     <Hero />
     <Features />
@@ -19,7 +19,31 @@ import Layout from "@layouts/Layout.astro";
       <p class="text-lg text-gray-600 text-center mt-2">
         Explore some of our latest research and development projects.
       </p>
-      <ProjectList />
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        {projects.slice(0, 3).map((project) => (
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-700">
+              <a href={project.url} target="_blank" class="hover:text-blue-600">
+                {project.title}
+              </a>
+            </h3>
+            {project.code && (
+              <p class="text-sm text-gray-500 mt-2">
+                <a href={project.code} target="_blank" class="text-blue-500 font-medium">
+                  View Code
+                </a>
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-8">
+        <Link href={`${import.meta.env.BASE_URL}projects`} class="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 hover:text-gray-200 transition">
+          More Projects →
+        </Link>
+      </div>
     </section>
   </Container>
 </Layout>
