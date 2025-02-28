@@ -25,7 +25,10 @@
     "astro-icon": "^1.1.0",
     "astro-navbar": "^2.3.2",
     "astro-seo": "^0.8.3",
+    "jscharting": "^3.4.0",
+    "jscharting-react": "^1.4.2",
     "react": "^19.0.0",
+    "reactflow": "^11.11.4",
     "sharp": "^0.33.4",
     "tailwindcss": "^3.4.3"
   },
