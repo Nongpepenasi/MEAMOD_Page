@@ -12,8 +12,6 @@ author: "MAEMOD Team"
 tags: [malaria, modelling, wolfram, mathematica]
 ---
 
-# A collection of the _P. falciparum_ Dynamic models
-
 A collection of the dynamic models of _P. falciparum_ parasites in human before and during treatment with antimalarial drugs. These models were written in Wolfram language. The source code files of the models can be downloaded from <https://github.com/slphyx/P.-falciparum-Dynamics> and they can be opened by [Mathematica](http://www.wolfram.com/mathematica) or [CDF player](http://www.wolfram.com/cdf-player/).
 
 ## Examples

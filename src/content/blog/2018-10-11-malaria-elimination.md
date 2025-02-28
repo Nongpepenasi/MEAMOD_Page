@@ -12,8 +12,6 @@ author: "Richard J Maude & Team"
 tags: [malaria, modelling, elimination, public-health]
 ---
 
-# Malaria Elimination
-
 Richard J Maude1, Sompob Saralamba1, Adrian Lewis, Dean Sherwood, Nicholas J White1, Nicholas PJ Day, Arjen M Dondorp, Lisa J White
 
 **Contact**: Richard Maude (<richard@tropmedres.ac>)

@@ -12,8 +12,6 @@ author: "Ben"
 tags: [job, research, modelling, vaccines]
 ---
 
-# post-doc post based in Oxford: statistical/mathematical modeller to work on developing and evaluating novel adaptive trial designs for evaluating vaccines in infectious disease emergencies.ข
-
 We have an Oxford-based post-doc post for a statistical/mathematical modeller to work on developing and evaluating novel adaptive trial designs for evaluating vaccines in infectious disease emergencies.
 
 Working with me, Peter Horby + collaborating with Harvard (Marc Lipsitch & Bill Hanage) and Cambridge (Daniela De Angelis & Anne Presanis).
