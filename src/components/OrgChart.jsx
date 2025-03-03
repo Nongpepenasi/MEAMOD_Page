@@ -1,141 +1,96 @@
-import { useEffect } from "react";
-import React, { useState, useCallback } from "react";
-import ReactFlow, { Controls, MiniMap, Handle, Position } from "reactflow";
-import "reactflow/dist/style.css";
-import CustomNode from "components/CustomNode";
+import React, { useEffect, useRef } from "react";
+import { OrgChart } from "d3-org-chart";
+import * as d3 from "d3";
 
-// // Custom Node Component
-// const CustomNode = ({ data }) => {
-//   return (
-//     <div style={{
-//       border: "2px solid #333",
-//       borderRadius: "8px",
-//       padding: "10px",
-//       textAlign: "center",
-//       background: "#f0f0f0",
-//       width: "200px",
-//       position: "relative",
-//     }}>
-//       <div style={{ fontWeight: "bold", color: "#555" }}>{data.position}</div>
-//       <div style={{ fontSize: "14px", color: "#222", marginTop: "5px" }}>{data.name}</div>
-//     </div>
-//   );
-// };
+// 🔥 ข้อมูลโครงสร้างองค์กร
+// const orgData = [
+//   { id: "1", name: "Assoc Prof Dr. Wirichada Pan-ngum, PhD", position: "Head of Department", parentId: null },
+//   { id: "3", name: "Assoc Prof Yoel Lubell", position: "Head of EIRG", parentId: "1" },
+//   { id: "4", name: "Watcharintorn Thongpiam", position: "SEACTN, Spot Sepsis Project Management", parentId: "3" },
+//   { id: "5", name: "Assoc Prof Marco Liverani", position: "Senior Research Fellow", parentId: "3" },
+// ];
 
-// const chartConfig = {
-//   type: 'organizational',
-//   series: [
-//     {
-//       points: [
-//         { id: "CEO", name: "<b>Head of MEAMOD</b><br>Assoc Prof Dr. Wirichada Pan-ngum, PhD", parent: null, color: "#ff4c4c" },
-//         { id: "P-Co", name: "<b>Project Coordinator</b><br>Sureeporn Thongkuna", parent: "CEO", color: "#ff9900" },
-//         { id: "H-EIRG", name: "<b>Head of EIRG</b><br>Assoc Prof Yoel Lubell", parent: "CEO", color: "#ff9900" },
-//         { id: "H-DRlaDD", name: "<b>Head of DRlaDD</b><br>Prof Ben S Cooper", parent: "CEO", color: "#00cc99" },
-//         { id: "H-MOTIP", name: "<b>MOTIP Director</b><br>Maneerat Ekkapongpisit, PhD", parent: "CEO", color: "#00cc99" },
-//         { id: "H-RSE", name: "<b>Head of Research Software Engineer</b><br>David Brown", parent: "CEO", color: "#3399ff" },
-//         { id: "H-NTDM", name: "<b>Head of NTDM</b><br>Assoc Prof Dr Wirichada Pan-ngum, PhD", parent: "CEO", color: "#3399ff" },
-//       ],
-//     },
-//   ],
-// };
-
-// const OrgChart = () => (
-//   <div style={{ width: '100%', height: '500px' }}>
-//     <JSCharting options={chartConfig} />
-//   </div>
-// );
-
-
-const nodeTypes = { custom: CustomNode };
-
-const initialNodes = [
+const orgData = [
   // Head of Department
-  { id: "1", data: { name: "Assoc Prof Dr. Wirichada Pan-ngum, PhD", position: "Head of Department" }, position: { x: 400, y: 50 }, type: "custom" },
-  { id: "2", data: { name: "Sureeporn Thongkuna", position: "Project Coordinator" }, position: { x: 400, y: 50 }, type: "custom", parent: "1" },
+  { id: "1", name: "Assoc Prof Dr. Wirichada Pan-ngum, PhD", position: "Head of Department", parentId: null },
+  { id: "2", name: "Sureeporn Thongkuna", position: "Project Coordinator", parentId: "1" },
 
   // EIRG Groups
-  { id: "3", data: { name: "Assoc Prof Yoel Lubell", position: "Head of EIRG" }, position: { x: 200, y: 150 }, type: "custom", parent: "1" },
-  { id: "4", data: { name: "Watcharintorn Thongpiam", position: "SEACTN, Spot Sepsis Project Management" }, position: { x: 200, y: 250 }, type: "custom", parent: "3" },
-  { id: "5", data: { name: "Assoc Prof Marco Liverani", position: "Senior Research Fellow" }, position: { x: 200, y: 250 }, type: "custom", parent: "3" },
-  { id: "6", data: { name: "Dr Nan Shwe Nwe Htun", position: "SEACTN - Postdoc Researcher" }, position: { x: 400, y: 250 }, type: "custom", parent: "3" },
-  { id: "7", data: { name: "Dr Arjun Chandna", position: "Project Coordinator, DPhil Student" }, position: { x: 400, y: 250 }, type: "custom", parent: "3" },
-  { id: "8", data: { name: "Dr Chris (Rusheng) Chew", position: "SEACTN - Clinical Researcher, DPhil student" }, position: { x: 600, y: 250 }, type: "custom", parent: "3" },
-  { id: "9", data: { name: "Meiwen Zhang", position: "SEACTN - Epidemiologist, DPhil student" }, position: { x: 800, y: 250 }, type: "custom", parent: "3" },
-  { id: "10", data: { name: "Prach Chanbroset", position: "Project IT Coordinator (Consultant)" }, position: { x: 800, y: 250 }, type: "custom", parent: "3" },
-  { id: "11", data: { name: "Krongkarn Nareepon", position: "Logistic Assistant (Consultant)" }, position: { x: 800, y: 250 }, type: "custom", parent: "3" },
-  { id: "12", data: { name: "Elke Wynberg", position: "Consultant (EDAM Project)" }, position: { x: 800, y: 250 }, type: "custom", parent: "3" },
-  { id: "13", data: { name: "Porawit Sangplob", position: "Logistic Assistant (Consultant)" }, position: { x: 800, y: 250 }, type: "custom", parent: "3" },
-  { id: "14", data: { name: "Suh Young Kang, Sophie ", position: "DPhil Student" }, position: { x: 800, y: 250 }, type: "custom", parent: "3" },
+  { id: "3", name: "Assoc Prof Yoel Lubell", position: "Head of EIRG", parentId: "1" },
+  { id: "4", name: "Watcharintorn Thongpiam", position: "SEACTN, Spot Sepsis Project Management", parentId: "3" },
+  { id: "5", name: "Assoc Prof Marco Liverani", position: "Senior Research Fellow", parentId: "3" },
+  { id: "6", name: "Dr Nan Shwe Nwe Htun", position: "SEACTN - Postdoc Researcher", parentId: "3" },
+  { id: "7", name: "Dr Arjun Chandna", position: "Project Coordinator, DPhil Student", parentId: "3" },
+  { id: "8", name: "Dr Chris (Rusheng) Chew", position: "SEACTN - Clinical Researcher, DPhil student", parentId: "3" },
+  { id: "9", name: "Meiwen Zhang", position: "SEACTN - Epidemiologist, DPhil student", parentId: "3" },
+  { id: "10", name: "Prach Chanbroset", position: "Project IT Coordinator (Consultant)", parentId: "3" },
+  { id: "11", name: "Krongkarn Nareepon", position: "Logistic Assistant (Consultant)", parentId: "3" },
+  { id: "12", name: "Elke Wynberg", position: "Consultant (EDAM Project)", parentId: "3" },
+  { id: "13", name: "Porawit Sangplob", position: "Logistic Assistant (Consultant)", parentId: "3" },
+  { id: "14", name: "Suh Young Kang, Sophie", position: "DPhil Student", parentId: "3" },
 
   // DRlaDD Groups
-  { id: "15", data: { name: "Prof Ben S Cooper", position: "Head of DRIaDD" }, position: { x: 600, y: 150 }, type: "custom", parent: "1" },
-  { id: "16", data: { name: "Cherry Lim", position: "Senior Scientist" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "17", data: { name: "Mo Yin", position: "Research Associate, Deputy Director ADVANCE-ID network" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "18", data: { name: "Sean Cavany", position: "Mathematical Modeller" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "19", data: { name: "Myo Maung Maung Swe", position: "Postdoc Researcher" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "20", data: { name: "Raneem Aizouk", position: "Postdoc Researcher" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "21", data: { name: "Mark Pritchard", position: "Postdoc Researcher" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "22", data: { name: "Alicia Gill", position: "Senior Scientist" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "23", data: { name: "Mathupanee Oonsivilai", position: "Research Assistant, DPhil Student" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "24", data: { name: "Toby Bonvoisin", position: "DPhil Student" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "25", data: { name: "Oraya Srimokla", position: "DPhil Student" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "26", data: { name: "Rachel Otuko ", position: "DPhil Student" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "27", data: { name: "Lucien Swetschinski ", position: "DPhil Student" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
-  { id: "28", data: { name: "Freddie Fell ", position: "DPhil Student" }, position: { x: 600, y: 150 }, type: "custom", parent: "15" },
+  { id: "15", name: "Prof Ben S Cooper", position: "Head of DRIaDD", parentId: "1" },
+  { id: "16", name: "Cherry Lim", position: "Senior Scientist", parentId: "15" },
+  { id: "17", name: "Mo Yin", position: "Research Associate, Deputy Director ADVANCE-ID network", parentId: "15" },
+  { id: "18", name: "Sean Cavany", position: "Mathematical Modeller", parentId: "15" },
+  { id: "19", name: "Myo Maung Maung Swe", position: "Postdoc Researcher", parentId: "15" },
+  { id: "20", name: "Raneem Aizouk", position: "Postdoc Researcher", parentId: "15" },
+  { id: "21", name: "Mark Pritchard", position: "Postdoc Researcher", parentId: "15" },
+  { id: "22", name: "Alicia Gill", position: "Senior Scientist", parentId: "15" },
+  { id: "23", name: "Mathupanee Oonsivilai", position: "Research Assistant, DPhil Student", parentId: "15" },
+  { id: "24", name: "Toby Bonvoisin", position: "DPhil Student", parentId: "15" },
+  { id: "25", name: "Oraya Srimokla", position: "DPhil Student", parentId: "15" },
+  { id: "26", name: "Rachel Otuko", position: "DPhil Student", parentId: "15" },
+  { id: "27", name: "Lucien Swetschinski", position: "DPhil Student", parentId: "15" },
+  { id: "28", name: "Freddie Fell", position: "DPhil Student", parentId: "15" },
 
   // MOTIP Groups
-  { id: "29", data: { name: "Maneerat Ekkapongpisit, PhD", position: "MOTIP Director" }, position: { x: 1200, y: 250 }, type: "custom", parent: "1" },
-  { id: "30", data: { name: "Grid Gunjina", position: "Project Manager" }, position: { x: 1200, y: 250 }, type: "custom", parent: "29" },
-  { id: "31", data: { name: "Chawitar Noparatvarakorn", position: "Project Manager" }, position: { x: 1200, y: 250 }, type: "custom", parent: "29" },
-  { id: "32", data: { name: "Puttarin Kulchaitanaroaj, PhD", position: "Health Economist" }, position: { x: 1200, y: 250 }, type: "custom", parent: "29" },
-  { id: "33", data: { name: "Adshariya Agsornintara", position: "Consultant (Tropmed DC)" }, position: { x: 1200, y: 250 }, type: "custom", parent: "29" },
+  { id: "29", name: "Maneerat Ekkapongpisit, PhD", position: "MOTIP Director", parentId: "1" },
+  { id: "30", name: "Grid Gunjina", position: "Project Manager", parentId: "29" },
+  { id: "31", name: "Chawitar Noparatvarakorn", position: "Project Manager", parentId: "29" },
+  { id: "32", name: "Puttarin Kulchaitanaroaj, PhD", position: "Health Economist", parentId: "29" },
+  { id: "33", name: "Adshariya Agsornintara", position: "Consultant (Tropmed DC)", parentId: "29" },
   
   // Research Software Engineering Groups
-  { id: "34", data: { name: "Dr Sompob Saralamba, PhD", position: "Head of RSE" }, position: { x: 1000, y: 150 }, type: "custom", parent: "1" },
-  { id: "35", data: { name: "Tanaphum Wichaita", position: "Research Software Engineer" }, position: { x: 1000, y: 250 }, type: "custom", parent: "34" },
+  { id: "34", name: "Dr Sompob Saralamba, PhD", position: "Head of RSE", parentId: "1" },
+  { id: "35", name: "Tanaphum Wichaita", position: "Research Software Engineer", parentId: "34" },
 
   // NTDM Groups
-  { id: "36", data: { name: "Assoc Prof Dr Wirichada Pan-ngum, PhD", position: "Head of NTDM" }, position: { x: 1000, y: 250 }, type: "custom", parent: "14" },
-  { id: "37", data: { name: "Chris Painter", position: "Health Economist" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "38", data: { name: "Phrutsamon Wongnak", position: "Postdoc Researcher" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "39", data: { name: "Ainura Moldokmatova", position: "DPhil Student" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "40", data: { name: "Weerakorn Thichumpa", position: "PhD Student" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "41", data: { name: "Pavadee  Chuaicharoen", position: "PhD Student" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "42", data: { name: "Aung Myint Thu", position: "PhD Student" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "43", data: { name: "Yamin Frazal", position: "PhD Student" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "44", data: { name: "Tara Wagner-Gamble", position: "DPhil Student (co-supervised)" }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
-  { id: "45", data: { name: "Amandip Sahota", position: "DPhil Student " }, position: { x: 1000, y: 250 }, type: "custom", parent: "36" },
+  { id: "36", name: "Assoc Prof Dr Wirichada Pan-ngum, PhD", position: "Head of NTDM", parentId: "1" },
+  { id: "37", name: "Chris Painter", position: "Health Economist", parentId: "36" },
+  { id: "38", name: "Phrutsamon Wongnak", position: "Postdoc Researcher", parentId: "36" },
+  { id: "39", name: "Ainura Moldokmatova", position: "DPhil Student", parentId: "36" },
+  { id: "40", name: "Weerakorn Thichumpa", position: "PhD Student", parentId: "36" },
+  { id: "41", name: "Pavadee  Chuaicharoen", position: "PhD Student", parentId: "36" },
+  { id: "42", name: "Aung Myint Thu", position: "PhD Student", parentId: "36" },
+  { id: "43", name: "Yamin Frazal", position: "PhD Student", parentId: "36" },
+  { id: "44", name: "Tara Wagner-Gamble", position: "DPhil Student (co-supervised)", parentId: "36" },
+  { id: "45", name: "Amandip Sahota", position: "DPhil Student", parentId: "36" },
 ];
 
-const initialEdges = [
-  { id: "e1-2", source: "1", target: "2" },
-  { id: "e1-3", source: "1", target: "3" },
-  { id: "e1-4", source: "1", target: "4" },
-  { id: "e2-5", source: "2", target: "5" },
-  { id: "e2-6", source: "2", target: "6" },
-  { id: "e2-7", source: "2", target: "7" },
-  { id: "e2-8", source: "2", target: "8" },
-  { id: "e4-9", source: "4", target: "9" },
-  { id: "e4-10", source: "4", target: "10" },
-  { id: "e2-11", source: "2", target: "11" },
-  { id: "e2-12", source: "2", target: "12" },
-  { id: "e2-13", source: "2", target: "13" },
-  { id: "e2-14", source: "2", target: "14" },
-  { id: "e2-15", source: "2", target: "15" },
-];
+const OrgChartComponent = () => {
+  const chartRef = useRef(null);
 
-const OrgChart = () => {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  useEffect(() => {
+    if (!chartRef.current) return;
 
-  return (
-    <div style={{ width: "100%", height: "700px" }}>
-      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
-        <Controls />
-        <MiniMap />
-      </ReactFlow>
-    </div>
-  );
+    // 🔥 ใช้ D3.js สร้าง Org Chart
+    const chart = new OrgChart()
+      .container(chartRef.current)
+      .data(orgData)
+      .nodeWidth((d) => 220)
+      .nodeHeight((d) => 120)
+      .nodeContent((d) => `
+        <div style="border:1px solid #ddd; border-radius:8px; padding:10px; background:#f8f9fa">
+          <div style="font-weight:bold">${d.data.position}</div>
+          <div>${d.data.name}</div>
+        </div>
+      `)
+      .render();
+  }, [orgData, chartRef.current]);
+
+  return <div ref={chartRef} style={{ width: "100%", height: "700px" }} />;
 };
 
-export default OrgChart;
+export default OrgChartComponent;
