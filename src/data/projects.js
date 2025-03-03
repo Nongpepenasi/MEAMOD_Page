@@ -1,20 +1,8 @@
 export const projects = [
   {
-    title: "Malaria Elimination on the web",
-    url: "https://maemod-moru.github.io/2018-10-11-malaria-elimination/",
-  },
-  {
-    title: "Estimation of gestational age from fundal height",
-    url: "http://www.tropmedres.ac/gestational-age",
-  },
-  {
     title: "Identify artemisinin resistance",
     url: "https://malaria.shinyapps.io/id_artemisinin_resistance/",
     code: "https://github.com/MAEMOD-MORU/mixmodelpaperfinal",
-  },
-  {
-    title: "Cost-Effectiveness of G6PD Screening",
-    url: "http://www.tropmedres.ac/cost-effectiveness-of-g6pd-screening",
   },
   {
     title: "Utility for Randomforest predicting resistance",
@@ -23,10 +11,6 @@ export const projects = [
   {
     title: "HEV vaccination policy evaluation tool",
     url: "https://moru.shinyapps.io/HEVmodel/",
-  },
-  {
-    title: "LOMWRU AMR Dashboard",
-    url: "https://moru.shinyapps.io/laoamr/",
   },
   {
     title: "Economic Cost of AMR",
@@ -59,5 +43,21 @@ export const projects = [
   {
     title: "Applying taxonomic Boundaries for species Identification",
     url: "https://github.com/slphyx/ABI",
+  },
+  {
+    title: "Malaria Elimination on the web",
+    url: "https://maemod-moru.github.io/2018-10-11-malaria-elimination/",
+  },
+  {
+    title: "Estimation of gestational age from fundal height",
+    url: "http://www.tropmedres.ac/gestational-age",
+  },
+  {
+    title: "Cost-Effectiveness of G6PD Screening",
+    url: "http://www.tropmedres.ac/cost-effectiveness-of-g6pd-screening",
+  },
+  {
+    title: "LOMWRU AMR Dashboard",
+    url: "https://moru.shinyapps.io/laoamr/",
   },
 ];

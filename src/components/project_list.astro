@@ -1,14 +1,32 @@
 ---
-import { getCollection } from "astro:content";
 import { projects } from "data/projects";
 import { tools } from "data/tools";
 ---
 
-<div class="container mx-auto py-10">
+<div class="container mx-auto py-10" x-data="{ showAll: false }">
   <h2 class="text-3xl font-bold text-gray-800 mb-6">Projects</h2>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {projects.map((project) => (
+    {projects.slice(0, 6).map((project) => (
       <div class="bg-white p-4 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-105 transition-transform duration-300">
+        <h3 class="text-lg font-semibold text-gray-700">
+          <a href={project.url} target="_blank" class="hover:text-blue-600">
+            {project.title}
+          </a>
+        </h3>
+        {project.code && (
+          <p class="text-sm text-gray-500">
+            <a href={project.code} target="_blank" class="text-blue-500">
+              View Code
+            </a>
+          </p>
+        )}
+      </div>
+    ))}
+
+    {projects.slice(6).map((project) => (
+      <div x-show="showAll" x-cloak x-transition.opacity.duration.300ms 
+           class="bg-white p-4 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl hover:scale-105 transition-transform duration-300">
         <h3 class="text-lg font-semibold text-gray-700">
           <a href={project.url} target="_blank" class="hover:text-blue-600">
             {project.title}
@@ -25,7 +43,15 @@ import { tools } from "data/tools";
     ))}
   </div>
 
-  <h2 class="text-3xl font-bold text-gray-800 mt-10 mb-6">Tools & Codes</h2>
+  <div class="text-center mt-8">
+    <button 
+      @click="showAll = !showAll;if (!showAll) $refs.projectSection.scrollIntoView({ behavior: 'smooth' });" 
+      class="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+      <span x-text="showAll ? 'Show Less' : 'Show More'"></span>
+    </button>
+  </div>
+
+  <h2 x-ref="projectSection" class="text-3xl font-bold text-gray-800 mt-10 mb-6">Tools & Codes</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {tools.map((tool) => (
       <div class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition duration-300">
